@@ -87,12 +87,10 @@ def allure_report_generator(config):
         
         def generate_and_serve_report():
             try:
-                # Generate the report
                 result = subprocess.run(
-                    ["allure", "generate", "allure-result", "-o", "allure-report"],
+                    ["allure", "serve", "allure-result"],
                     capture_output=True,
-                    text=True,
-                    check=False
+                    text=True
                 )
                 
                 if result.returncode == 0:
@@ -103,6 +101,7 @@ def allure_report_generator(config):
                     print(result.stderr)
             except Exception as e:
                 print(f"❌ Error generating Allure report: {e}")
+
         # Run in a separate thread to avoid blocking test execution
         report_thread = threading.Thread(target=generate_and_serve_report)
         report_thread.daemon = True
