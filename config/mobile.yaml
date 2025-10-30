@@ -4,4 +4,5 @@ emulator_device: "iPhone 12 Pro"
 mode: "mobile"
 reruns: 3
 reruns_delay: 2
+run_in_parallel: 3
 timeout: 10

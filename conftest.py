@@ -33,7 +33,7 @@ def config(request):
 def pytest_configure(config):
     """Configure pytest with dynamic options based on environment config file"""
     
-    env = config.getoption("--env", default="prod")
+    env = config.getoption("--env", default="mobile")
     
     try:
         env_config = load_config(env)
@@ -42,6 +42,12 @@ def pytest_configure(config):
             config.option.reruns = env_config.get("reruns")
             config.option.reruns_delay = env_config.get("reruns_delay", 1)
             print(f"Configured reruns: {env_config.get('reruns')} with delay: {env_config.get('reruns_delay', 1)}s")
+
+        if env_config.get("run_in_parallel"):
+            workers = env_config.get("run_in_parallel")
+            config.option.numprocesses = workers
+            print(f"Configured parallel execution: {workers} workers")
+
     except FileNotFoundError as e:
         print(f"Warning: {e}")
 
