@@ -9,7 +9,7 @@ import yaml
 
 def pytest_addoption(parser):
     parser.addoption(
-        "--env", action="store", default="prod", help="Environment to run tests against"
+        "--env", action="store", default="mobile", help="Environment to run tests against"
     )
 
 
