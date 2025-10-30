@@ -1,4 +1,4 @@
 base_url: "https://m.twitch.tv/"
-timeout: 10
 browser: "chrome"
-mode: "mobile"
+mode: "web"
+timeout: 10
