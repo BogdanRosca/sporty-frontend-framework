@@ -1,6 +1,6 @@
 def test_failing(config):
     """Failing test to validate rerun"""
-    assert True == False
+    assert False
 
 def test_config(config):
     """Simple test to validate loading of configuration through conftest fixture"""
