@@ -1,7 +1,9 @@
 def test_failing(config):
+    """Failing test to validate rerun"""
     assert True == False
 
 def test_config(config):
+    """Simple test to validate loading of configuration through conftest fixture"""
     assert config["base_url"] == "https://m.twitch.tv/"
 
 def test_open_page(driver, config):
