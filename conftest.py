@@ -1,8 +1,11 @@
-import yaml
-import os
-import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+import os
+import pytest
+import subprocess
+import threading
+import yaml
+
 
 def pytest_addoption(parser):
     parser.addoption(
@@ -70,3 +73,33 @@ def driver(config):
     yield driver
     
     driver.quit()
+
+
+@pytest.fixture(scope="session", autouse=True)
+def allure_report_generator(config):
+    """
+    Session-scoped fixture that generates and serves Allure report after all tests complete.
+    This fixture runs automatically (autouse=True) and doesn't need to be explicitly called.
+    """
+    yield  # Allows tests to run first
+    
+    if config.get("generate_report"):
+        
+        def generate_and_serve_report():
+            try:
+                # Generate the report
+                result = subprocess.run(["allure", "serve", "allure-result"])
+                
+                if result.returncode == 0:
+                    print("✅ Allure report generated successfully!")
+                    print("📊 Opening report in browser...")        
+                else:
+                    print("❌ Failed to generate Allure report:")
+                    print(result.stderr)
+            except Exception as e:
+                print(f"❌ Error generating Allure report: {e}")
+        
+        # Run in a separate thread to avoid blocking test execution
+        report_thread = threading.Thread(target=generate_and_serve_report)
+        report_thread.daemon = True
+        report_thread.start()

@@ -1,6 +1,7 @@
 base_url: "https://m.twitch.tv/"
 browser: "chrome"
-emulator_device: "iPhone 12 Pro" 
+emulator_device: "iPhone 12 Pro"
+generate_report: True
 mode: "mobile"
 reruns: 3
 reruns_delay: 2
