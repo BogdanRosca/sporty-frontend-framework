@@ -1,0 +1,5 @@
+base_url: "https://m.twitch.tv/"
+browser: "chrome"
+mode: "web"
+reruns: 1
+timeout: 10
