@@ -62,6 +62,7 @@ class Selenium:
             }});
         """)
         logger.info(f"Scrolled {type} {pixels} pixels in direction: {direction}")
+        logger.info(f"Wait 2 seconds")
         time.sleep(2)
 
     def is_visible(self, locator: str) -> bool:
@@ -70,8 +71,10 @@ class Selenium:
             WebDriverWait(self.driver, self.timeout).until(
                 EC.visibility_of_element_located(locator)
             )
+            logger.info(f"Element {locator} is visible")
             return True
         except TimeoutException:
+            logger.info(f"Element {locator} is not visible")
             return False
         
     def is_not_visible(self, locator: str) -> bool:
@@ -80,6 +83,9 @@ class Selenium:
             WebDriverWait(self.driver, self.timeout).until(
                 EC.invisibility_of_element_located(locator)
             )
+            logger.info(f"Element {locator} is not visible")
             return True
         except TimeoutException:
+            logger.info(f"Element {locator} is visible")
             return False
+            

@@ -1,10 +1,13 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+import logging
 import os
 import pytest
 import subprocess
 import threading
 import yaml
+
+logger = logging.getLogger(__name__)
 
 
 def pytest_addoption(parser):
@@ -115,5 +118,7 @@ def screenshot_on_teardown(config, driver):
 
     import time
     time.sleep(60)
+    logger.info(f"Wait 60 seconds")
     screenshot_path = os.path.join(config.get('screenshot_folder'), 'screenshot.png')
     driver.save_screenshot(screenshot_path)
+    logger.info(f"Snapshot saved at: {screenshot_path}")
