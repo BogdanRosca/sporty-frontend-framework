@@ -1,10 +1,13 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+import logging
 import os
 import pytest
 import subprocess
 import threading
 import yaml
+
+logger = logging.getLogger(__name__)
 
 
 def pytest_addoption(parser):
@@ -66,6 +69,7 @@ def driver(config):
         print(f"Emulating {config.get('emulator_device')} device\n")
         mobile_emulation = {"deviceName": config.get("emulator_device")}
         chrome_options.add_experimental_option("mobileEmulation", mobile_emulation)
+        chrome_options.add_argument('--window-size=390,844')
 
     driver = webdriver.Chrome(options=chrome_options)
     driver.implicitly_wait(config.get("timeout", 10))
@@ -78,8 +82,7 @@ def driver(config):
 @pytest.fixture(scope="session", autouse=True)
 def allure_report_generator(config):
     """
-    Session-scoped fixture that generates and serves Allure report after all tests complete.
-    This fixture runs automatically (autouse=True) and doesn't need to be explicitly called.
+    Session-scoped fixture that generates and serves Allure report after all tests complete
     """
     yield  # Allows tests to run first
     
@@ -106,3 +109,16 @@ def allure_report_generator(config):
         report_thread = threading.Thread(target=generate_and_serve_report)
         report_thread.daemon = True
         report_thread.start()
+
+
+@pytest.fixture
+def screenshot_on_teardown(config, driver):
+    """Take screenshot of viewport at the end of the test"""
+    yield # Allows tests to run first
+
+    import time
+    time.sleep(60)
+    logger.info(f"Wait 60 seconds")
+    screenshot_path = os.path.join(config.get('screenshot_folder'), 'screenshot.png')
+    driver.save_screenshot(screenshot_path)
+    logger.info(f"Snapshot saved at: {screenshot_path}")
