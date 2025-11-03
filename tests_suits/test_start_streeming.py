@@ -1,6 +1,6 @@
 from pages.directory_page import DirectoryPage
 
-def test_failing(driver, config, screenshot_on_teardown):
+def test_start_streaming(driver, config, screenshot_on_teardown):
     """Validate streaming of a StarCraft II game"""
     page = DirectoryPage(driver)
 

@@ -3,8 +3,5 @@ browser: "chrome"
 emulator_device: "iPhone 12 Pro"
 generate_report: True
 mode: "mobile"
-reruns: 3
-reruns_delay: 2
-run_in_parallel: 3
 screenshot_folder: 'screenshots'
 timeout: 10

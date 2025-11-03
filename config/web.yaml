@@ -1,6 +1,5 @@
 base_url: "https://m.twitch.tv"
 browser: "chrome"
 mode: "web"
-reruns: 1
 screenshot_folder: 'screenshots'
 timeout: 10
