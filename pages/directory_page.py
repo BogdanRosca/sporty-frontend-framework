@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 
 
 class DirectoryPage(Selenium):
-    
+
     CHANNELS_SECTION = (By.XPATH, "//*[@class='tw-title' and contains(text(), 'Channels')]")
     COOKIES_ACCEPT = (By.XPATH, "//*[@data-a-target='tw-core-button-label-text'][.//div[contains(text(), 'Accept')]]")
     COOKIES_BANNER = (By.CLASS_NAME, "consent-banner")
@@ -25,13 +25,13 @@ class DirectoryPage(Selenium):
                 self.click(self.COOKIES_REJECT)
                 self.is_not_visible(self.COOKIES_BANNER)
         else:
-            pass   
-    
+            pass
+
     def open(self, config):
         """ Opens /directory page """
         URL = f"{config['base_url']}/directory"
         self.driver.get(URL)
-        self.is_visible(self.SEARCH_BUTTON) 
+        self.is_visible(self.SEARCH_BUTTON)
         if self.driver.current_url != URL:
             raise RuntimeError(f"Not on {URL}")
         self._cookies(accept=True)
@@ -47,7 +47,7 @@ class DirectoryPage(Selenium):
         for _ in range(times):
             self.scroll(direction='top', pixels=100, type='smooth')
 
-    def start_streaming(self, index:int = 2):
+    def start_streaming(self, index: int = 2):
         """ Click on a stream button by index """
         live_streams = self._find_all(self.LIVE_STREAMS)
         if live_streams:

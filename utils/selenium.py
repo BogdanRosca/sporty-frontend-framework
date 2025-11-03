@@ -39,19 +39,19 @@ class Selenium:
         element.click()
         logger.info(f"Clicked {locator}")
 
-    def type(self, locator: str , text: str, clear_first: bool = True) -> None:
+    def type(self, locator: str, text: str, clear_first: bool = True) -> None:
         """ Finds input field by locator and sends keys """
         element = self._find(locator)
         if clear_first:
             element.clear()
         element.send_keys(text)
         logger.info(f"Typed '{text}' into {locator}")
-    
+
     def hit_enter(self, locator: str) -> None:
         """ Finds input field by locator and press ENTER """
         element = self._find(locator)
         element.send_keys(Keys.RETURN)
-        logger.info(f"Hit ENTER")
+        logger.info("Hit ENTER")
 
     def scroll(self, direction: Literal['top', 'left', 'right', 'bottom'], pixels: int, type: Literal['smooth', 'auto'] = 'smooth') -> None:
         """ Scrolls by specified pixels in the specified direction """
@@ -62,7 +62,7 @@ class Selenium:
             }});
         """)
         logger.info(f"Scrolled {type} {pixels} pixels in direction: {direction}")
-        logger.info(f"Wait 2 seconds")
+        logger.info("Wait 2 seconds")
         time.sleep(2)
 
     def is_visible(self, locator: str) -> bool:
@@ -76,7 +76,7 @@ class Selenium:
         except TimeoutException:
             logger.info(f"Element {locator} is not visible")
             return False
-        
+
     def is_not_visible(self, locator: str) -> bool:
         """ Checks if an element is not visible or not present """
         try:
@@ -88,4 +88,3 @@ class Selenium:
         except TimeoutException:
             logger.info(f"Element {locator} is visible")
             return False
-            

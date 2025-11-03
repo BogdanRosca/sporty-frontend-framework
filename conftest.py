@@ -15,7 +15,10 @@ logger = logging.getLogger(__name__)
 
 def pytest_addoption(parser):
     parser.addoption(
-        "--env", action="store", default="mobile", help="Environment to run tests against"
+        "--env",
+        action="store",
+        default="mobile",
+        help="Environment to run tests against"
     )
 
 
@@ -23,7 +26,7 @@ def load_config(env):
     """Helper function to load configuration from YAML file"""
 
     config_path = os.path.join("config", f"{env}.yaml")
-    
+
     if os.path.exists(config_path):
         with open(config_path) as f:
             return yaml.safe_load(f)
@@ -43,32 +46,35 @@ def config(request):
 def driver(config):
     """Setup and teardown for Selenium WebDriver"""
     chrome_options = Options()
-    
+
     if config.get("mode") == "mobile":
         print("\n")
         print("Running tests with mobile configuration")
         print(f"Emulating {config.get('emulator_device')} device\n")
         mobile_emulation = {"deviceName": config.get("emulator_device")}
-        chrome_options.add_experimental_option("mobileEmulation", mobile_emulation)
+        chrome_options.add_experimental_option(
+            "mobileEmulation",
+            mobile_emulation
+        )
         chrome_options.add_argument('--window-size=390,844')
 
     driver = webdriver.Chrome(options=chrome_options)
     driver.implicitly_wait(config.get("timeout", 10))
-    
+
     yield driver
-    
+
     driver.quit()
 
 
 @pytest.fixture(scope="session", autouse=True)
 def allure_report_generator(config):
     """
-    Session-scoped fixture that generates and serves Allure report after all tests complete
+    Generates and serves Allure report after all tests complete
     """
     yield  # Allows tests to run first
-    
+
     if config.get("generate_report"):
-        
+
         def generate_and_serve_report():
             try:
                 result = subprocess.run(
@@ -76,10 +82,9 @@ def allure_report_generator(config):
                     capture_output=True,
                     text=True
                 )
-                
+
                 if result.returncode == 0:
                     print("✅ Allure report generated successfully!")
-                    print("📊 To view the report, run: allure open allure-report")
                 else:
                     print("❌ Failed to generate Allure report:")
                     print(result.stderr)
@@ -95,11 +100,14 @@ def allure_report_generator(config):
 @pytest.fixture
 def screenshot_on_teardown(config, driver):
     """Take screenshot of viewport at the end of the test"""
-    yield # Allows tests to run first
-    
+    yield  # Allows tests to run first
+
     time.sleep(60)
-    logger.info(f"Wait 60 seconds")
-    screenshot_path = os.path.join(config.get('screenshot_folder'), 'screenshot.png')
+    logger.info("Wait 60 seconds")
+    screenshot_path = os.path.join(
+        config.get('screenshot_folder'),
+        'screenshot.png'
+    )
     driver.save_screenshot(screenshot_path)
     logger.info(f"Snapshot saved at: {screenshot_path}")
 
