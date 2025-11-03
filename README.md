@@ -1,5 +1,4 @@
 # Frontend Test Automation Framework
-
 ## Scope
 Scope of this project is to validate the start of a StarWars II stream on https://m.twitch.tv/.
 
@@ -48,13 +47,10 @@ pytest --env=web
 
 # Run specific test file
 pytest tests_suits/tests_suits/test_start_streeming.py
-
-# Run with custom parameters
-pytest --env=mobile --reruns=5
 ```
 
 ## Test execution recording
-
+![Test Execution Demo](Screen%20Recording%202025-11-03%20at%2017.38.03.gif)
 
 ## Using AI
 During coding tasks, I have used Github copilot integration in VS Code and Claude Sonnet 4 model for:
