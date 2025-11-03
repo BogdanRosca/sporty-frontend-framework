@@ -1,11 +1,14 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+import allure
 import logging
 import os
 import pytest
 import subprocess
 import threading
+import time
 import yaml
+
 
 logger = logging.getLogger(__name__)
 
@@ -93,10 +96,16 @@ def allure_report_generator(config):
 def screenshot_on_teardown(config, driver):
     """Take screenshot of viewport at the end of the test"""
     yield # Allows tests to run first
-
-    import time
+    
     time.sleep(60)
     logger.info(f"Wait 60 seconds")
     screenshot_path = os.path.join(config.get('screenshot_folder'), 'screenshot.png')
     driver.save_screenshot(screenshot_path)
     logger.info(f"Snapshot saved at: {screenshot_path}")
+
+    with open(screenshot_path, "rb") as image_file:
+        allure.attach(
+            image_file.read(),
+            name="Screenshot",
+            attachment_type=allure.attachment_type.PNG
+        )
